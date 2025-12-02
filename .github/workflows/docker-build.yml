@@ -27,7 +27,7 @@ jobs:
     # Robot, çalışan sisteme istek atıp cevap alabiliyor mu?
     - name: Verify Backend Health
       run: |
-        curl --fail http://localhost:5000/ || exit 1
+        curl --fail http://localhost/ || exit 1
         echo "Backend başarıyla cevap verdi!"
 
     # 4. Adım: Temizlik
