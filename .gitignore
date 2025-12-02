@@ -1,0 +1,10 @@
+# Python gereksiz dosyaları
+__pycache__/
+*.pyc
+
+# Docker veritabanı dosyaları (ASLA yüklenmez!)
+database/data/
+
+# Sanal ortamlar (varsa)
+venv/
+.env
