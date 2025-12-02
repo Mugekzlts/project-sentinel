@@ -1,0 +1,35 @@
+name: CI/CD Pipeline
+
+# Tetikleyici: Ne zaman çalışsın?
+# 'master' (veya 'main') dalına her kod yollandığında (push) çalış.
+on:
+  push:
+    branches: [ "master", "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest  # Robotumuz Ubuntu kullansın
+
+    steps:
+    # 1. Adım: Kodları GitHub'dan çek
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # 2. Adım: Docker Compose ile sistemi ayağa kaldır
+    # Bu adımda robot, senin bilgisayarında yaptığın işi kendi sunucusunda yapar.
+    - name: Build and Run with Docker Compose
+      run: |
+        docker compose up -d --build
+        echo "Sistem ayağa kalkıyor, biraz bekleyelim..."
+        sleep 10  # Konteynerlerin tam açılması için 10 saniye mola
+
+    # 3. Adım: Test Et
+    # Robot, çalışan sisteme istek atıp cevap alabiliyor mu?
+    - name: Verify Backend Health
+      run: |
+        curl --fail http://localhost:5000/ || exit 1
+        echo "Backend başarıyla cevap verdi!"
+
+    # 4. Adım: Temizlik
+    - name: Teardown
+      run: docker compose down
